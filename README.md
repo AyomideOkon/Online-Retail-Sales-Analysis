@@ -18,13 +18,13 @@ This project analyzes online retail transaction data to uncover insights into sa
 <img width="750" height="450" alt="Online Retail Performance Dashboard" src="https://github.com/user-attachments/assets/956eaf10-68e7-45cc-a3d1-f8195ab681f0" />
 
 ### Data Source
-This project uses the Online Retail II dataset from the UCI Machine Learning Repository. The dataset contains transactional data from a UK-based online retailer, including invoices, products, quantities, prices, customer IDs, and countries. It is widely used for data analytics, customer behavior, and sales analysis projects.
+This project uses the Online Retail II dataset from the UCI Machine Learning Repository. The dataset contains transactional data from a UK based online retailer, including invoices, products, quantities, prices, customer IDs, and countries.
 
 Link: [Online Retail II Dataset](https://archive.ics.uci.edu/dataset/502/online+retail+ii?utm_source=chatgpt.com)
 
 ### Tools
-- SQL- Data Cleaning And Analysis [Download here](https://www.google.com/aclk?sa=L&ai=DChsSEwiQ1ZSIuMiVAxU_pVAGHSVxOMgYACICCAEQARoCZGc&ae=2&co=1&ase=2&gclid=Cj0KCQjwsMLSBhD9ARIsAIpUTDoFp9zUz4I9oUIch82IuUSqthaIs-la6BhhicCi6buyLOHJEnon1dUaAnvHEALw_wcB&cid=CAASuwHkaHUeRtYPXh2-XjbEIyN5mV4IQKLM2_9v2gjeebigqXvALRuPxh_yca1mqxUbdCSr69V5SdMbETP3hR5eu-cBIG8sQMzz8RizvVVkmk6NjH4Ei9da0rgZFV79hmaOGYzop6X-ov-uQDc_rL12CMvYG5ffPPZEIXeKQbPw3EVRORBS_sTST01FuSEswphZQBKfxF7e7UUs2V_rI4XmrjMPDIMZgZUVNuLvp7dHXZ08VMwIWxvTL4Fk8FAy&cce=2&category=acrcp_v1_71&sig=AOD64_3t8n4aBzuueq7GyshaM7ubBGE5pw&q&nis=4&adurl&ved=2ahUKEwiouo6IuMiVAxWDe0EAHeeZOV8Q0Qx6BAgVEAE)
-- Tableau- Data Visualization [Download here](https://www.tableau.com/products/public)
+- Big Query - Data Cleaning And Analysis [Download here](https://www.google.com/aclk?sa=L&ai=DChsSEwiQ1ZSIuMiVAxU_pVAGHSVxOMgYACICCAEQARoCZGc&ae=2&co=1&ase=2&gclid=Cj0KCQjwsMLSBhD9ARIsAIpUTDoFp9zUz4I9oUIch82IuUSqthaIs-la6BhhicCi6buyLOHJEnon1dUaAnvHEALw_wcB&cid=CAASuwHkaHUeRtYPXh2-XjbEIyN5mV4IQKLM2_9v2gjeebigqXvALRuPxh_yca1mqxUbdCSr69V5SdMbETP3hR5eu-cBIG8sQMzz8RizvVVkmk6NjH4Ei9da0rgZFV79hmaOGYzop6X-ov-uQDc_rL12CMvYG5ffPPZEIXeKQbPw3EVRORBS_sTST01FuSEswphZQBKfxF7e7UUs2V_rI4XmrjMPDIMZgZUVNuLvp7dHXZ08VMwIWxvTL4Fk8FAy&cce=2&category=acrcp_v1_71&sig=AOD64_3t8n4aBzuueq7GyshaM7ubBGE5pw&q&nis=4&adurl&ved=2ahUKEwiouo6IuMiVAxWDe0EAHeeZOV8Q0Qx6BAgVEAE)
+- Tableau - Data Visualization [Download here](https://www.tableau.com/products/public)
 
 ### Data Cleaning/Preparation
 The following data cleaning steps were performed in SQL before analysis:
@@ -70,7 +70,7 @@ FROM
 Total Customers
 ```sql
 SELECT
-     COUNT(DISTINCT `CustomerID`) AS Total_Custmers
+     COUNT(DISTINCT `CustomerID`) AS Total_Customers
 FROM
      `porflio-projrct-1.ibm_churn_analysis.clean_churn_table`
 ```
@@ -91,7 +91,7 @@ FROM
 GROUP BY Month
 ORDER BY Month;
 ```
-Top Products By Revenue
+Top 10 Products By Revenue
 ```sql
 SELECT
      Description
@@ -102,49 +102,47 @@ GROUP BY
        Description
 ORDER BY
        Total_Revenue DESC
+LIMIT 10
 ```
-Churn by Monthy Charges
+Top 10 Product By Quantity Sold
 ```sql
 SELECT
-    CASE
-    WHEN MonthlyCharges >= 0 AND MonthlyCharges < 20 THEN '0-20'
-    WHEN MonthlyCharges >= 20 AND MonthlyCharges < 40 THEN '20-40'
-    WHEN MonthlyCharges >= 40 AND MonthlyCharges < 60 THEN '40-60'
-    WHEN MonthlyCharges >= 60 AND MonthlyCharges < 80 THEN '60-80'
-    ELSE '80+'
-    END AS Monthly_Charge_Group,
-    COUNT(*) total_customers,
-    SUM(CASE WHEN Churn = true THEN 1 ELSE 0 END)* 100/ count(*) AS churn_rate,
-    SUM(CASE WHEN Churn = true THEN 1 ELSE 0 END) ASS Total_churn
+     Description,
+     SUM(Quantity) AS Quantity_Sold
 FROM
-     `porflio-projrct-1.ibm_churn_analysis.clean_churn_table` 
+     `project-b019bf3e-9e2f-47ca-9af.online_retail_dataset.cleaned_retail_data`
 GROUP BY
-      Monthly_Charge_Group
-ORDER BY 
-       Monthly_Charge_Group;
+       Description
+ORDER BY
+       Quantity_Sold DESC
+LIMIT 10
 ```
-Churn Rate By Internet Service
+Top 10 Customers By Revenue Generated
 ```sql
 SELECT
-    InternetService,
-    COUNT(*) total_customers,
-    SUM(CASE WHEN Churn = true THEN 1 ELSE 0 END)* 100/ COUNT(*) AS churn_rate,
-    SUM(CASE WHEN Churn = true THEN 1 ELSE 0 END) AS Total_churn
-
+      `Customer ID`
+      SUM(Price*Quantity) AS Total_Revenue
 FROM
-     `porflio-projrct-1.ibm_churn_analysis.clean_churn_table` 
+     `project-b019bf3e-9e2f-47ca-9af.online_retail_dataset.cleaned_retail_data`
 GROUP BY
-      InternetService
-ORDER BY 
-       InternetService
+       `Customer ID`
+ORDER BY
+       Total_Revenue DESC
+LIMIT 10
 ```
-Churn Rate By Payment Method
+Sales By Country
 ```sql
 SELECT
-    PaymentMethod,
-    COUNT(*) total_customers,
-    SUM(CASE WHEN Churn = true THEN 1 ELSE 0 END)* 100/ COUNT(*),2) AS churn_rate,
-    SUM(CASE WHEN Churn = true THEN 1 ELSE 0 END) AS Total_churn
+   Country
+   SUM(Price*Quantity) AS Total_Revenue
+FROM
+     `project-b019bf3e-9e2f-47ca-9af.online_retail_dataset.cleaned_retail_data`
+GROUP BY
+      Country
+ORDER BY
+       Total_Revenue DESC
+LIMIT 10
+   
 
 FROM
      `porflio-projrct-1.ibm_churn_analysis.clean_churn_table` 
@@ -153,68 +151,49 @@ GROUP BY
 ORDER BY
        PaymentMethod;
 ```
-Churn Rate By Tech Support
-```sql
-SELECT
-    TechSupport,
-    COUNT(*) AS total_customers,
-    SUM(CASE WHEN Churn = true THEN 1 ELSE 0 END)* 100/ COUNT(*),2) AS churn_rate,
-    SUM(CASE WHEN Churn = true THEN 1 ELSE 0 END) AS Total_churn
 
-FROM
-     `porflio-projrct-1.ibm_churn_analysis.clean_churn_table` 
-GROUP BY
-      TechSupport
-ORDER BY
-       TechSupport;
-```
-Churn Rate By Online Security
-```sql
-SELECT
-    OnlineSecurity,
-    COUNT(*) AS total_customers,
-    SUM(CASE WHEN Churn = true THEN 1 ELSE 0 END)* 100/ COUNT(*),2) AS churn_rate,
-    SUM(CASE WHEN Churn = true THEN 1 ELSE 0 END) AS Total_churn
-
-FROM
-     `porflio-projrct-1.ibm_churn_analysis.clean_churn_table` 
-GROUP BY
-       OnlineSecurity
-ORDER BY
-        OnlineSecurity
-```
 ### Reults/Findings
 The analysis results are summarized as follows:
-- The analysis identified an overall customer churn rate of 26.54%, indicating that approximately one in four customers left the company.
-- Customers on Month-to-month contracts exhibited the highest churn rate, while customers on one-year and two-year contracts were significantly more likely to remain with the company.
-- Customers with shorter tenures were more likely to churn, suggesting that the highest risk of attrition occurs during the early stages of the customer lifecycle.
-- Higher monthly charges were associated with increased customer churn, indicating that pricing may influence customer retention.
-- Electronic Check was the payment method with the highest churn rate compared to other payment options.
-- Customers using Fiber Optic internet service experienced the highest churn rate among all internet service categories.
-- Customers without Tech Support showed a higher churn rate than those who subscribed to the service.
-- Customers without Online Security were more likely to churn than customers who had the service.
-- The interactive Tableau dashboard enables users to filter and explore churn trends across multiple customer segments, supporting data-driven business decisions.
+-The business generated £16.51 million in total revenue during the analysis period.
+- A total of thousands of customer orders were completed, demonstrating consistent transaction activity throughout the period.
+- Revenue fluctuated throughout the year, with November recording the highest monthly revenue, indicating strong seasonal demand during the holiday shopping period.
+- The United Kingdom contributed the highest share of total revenue, making it the company’s primary market.
+- Regency Cakestand 3 Tier generated the highest revenue, making it the most profitable product.
+- World War 2 Gliders ASSTD Designs recorded the highest quantity sold, indicating strong customer demand.
+- A small number of customers contributed a significant proportion of total revenue. The highest-value customers included 18102, 14646, 14156, 14911, and 17450.
+- Sales were concentrated among a relatively small number of high performing products, while many products generated comparatively lower revenue.
+- The monthly revenue trend showed clear seasonal fluctuations, suggesting that customer purchasing behavior varies throughout the year.
+- Product demand differed from product profitability, demonstrating that the highest selling products were not always the highest revenue-generating products.
+- The analysis highlighted opportunities for the business to strengthen inventory planning, customer retention strategies, and targeted marketing campaigns based on sales trends and customer purchasing behavior.
 
 ### Recommendation
 Based on the analysis the followinng actions are recommended to reduce churn rain and increase customer retention
-- Reduce month to month churn by offering incentives such as discounted pricing, loyalty rewards, or free service upgrades for customers who switch to one or twoyear contracts.
- Strengthen the first 12 months of the customer journey by implementing a structured onboarding program, welcome emails, check in calls, and proactive customer support to improve early retention.
-- Review high monthly pricing plans and introduce flexible pricing tiers or bundled packages to increase perceived value for customers with higher monthly charges.
-- Encourage customers to switch from Electronic Check to automatic payments by offering bill discounts, cashback, or reward points, as customers using automatic payment methods exhibit lower churn.
-- Investigate the high churn among Fiber Optic customers by collecting customer feedback, monitoring service quality, and addressing network reliability or pricing concerns where necessary.
-- Increase adoption of Tech Support and Online Security by bundling these services with internet plans, offering free trial periods, or providing discounted add-ons to customers who do not currently subscribe.
-- Develop an early-warning retention program that flags customers with high-risk characteristics (e.g., month-to-month contracts, short tenure, high monthly charges, and no value-added services) so targeted retention campaigns can be launched before they churn.
+Recommendations
+
+#### 1. Leverage Seasonal Demand
+With sales peaking in November, the business should implement a seasonal sales strategy by increasing inventory levels, expanding fulfillment capacity, and launching targeted marketing campaigns several weeks before the holiday period. This will help maximize revenue while reducing the risk of stockouts and delayed deliveries.
+#### 2. Strengthen Customer Retention
+The analysis shows that a small group of customers contributes a significant share of revenue. The business should prioritize retaining these high value customers through loyalty programs, exclusive discounts, personalized product recommendations, and early access to promotions to increase customer lifetime value.
+#### 3. Optimize Product Portfolio
+While some products generated the highest revenue, others achieved high sales volumes without generating equivalent revenue. The company should evaluate low margin, high volume products to improve pricing, bundle complementary items, or renegotiate supplier costs to increase profitability.
+#### 4. Improve Inventory Forecasting
+Historical monthly sales trends should be incorporated into demand forecasting models to ensure inventory aligns with expected customer demand. Maintaining adequate stock for consistently high performing products while reducing inventory for slow moving items can lower storage costs and improve cash flow.
+#### 5. Reduce Market Concentration Risk
+Since the majority of revenue originates from the United Kingdom, the business should expand its presence in underperforming international markets through localized marketing campaigns, strategic partnerships, and region-specific promotions to diversify revenue streams and reduce dependence on a single market.
 
  ### Limitations
-- The analysis is based on a single historical dataset and may not reflect current customer behavior or market conditions.
-- The dataset does not include information such as customer satisfaction, service quality, competitor activity, or reasons for churn, limiting the ability to explain why customers left.
-- The analysis identifies relationships between variables and churn but does not establish causation.
-- Customer segments were analyzed using grouped categories (e.g., tenure and monthly charges), which may mask more detailed patterns within individual customers.
-- This project focuses on descriptive and exploratory analysis and does not include predictive modeling to forecast future customer churn.
+Limitations
+-The dataset contains historical transaction data only and does not reflect current sales performance or recent customer behavior.
+- Customer demographic information such as age, gender, income, and location is unavailable, limiting the ability to perform customer segmentation or targeted marketing analysis.
+- The dataset does not include product cost or profit margin information, so the analysis focuses on revenue rather than profitability.
+- External factors such as promotions, discounts, holidays, economic conditions, and competitor activities are not included, making it difficult to determine the drivers behind changes in sales performance.
+- The analysis is based solely on completed transaction records and does not account for customer satisfaction, product reviews, or reasons for product returns.
+- The business is heavily represented by sales from the United Kingdom, which may limit the generalizability of insights to other markets.
+- The project analyzes historical sales trends but does not include predictive or forecasting models to estimate future demand.
+- The analysis focuses on individual product performance and does not examine purchasing relationships between products (e.g., frequently bought together), which could provide additional opportunities for cross-selling and product bundling.
 
 ### References
-References
-
-1. [IBM Telco Customer Churn Dataset. Kaggle.](https://www.kaggle.com/datasets/blastchar/telco-customer-churn)
+1. [Kaggle. (n.d.). Online Retail II Dataset.](https://www.kaggle.com/datasets/dvaser/online-retail-ii)
+2. [Google BigQuery Documentation](https://www.google.com/aclk?sa=L&ai=DChsSEwihoL_0ucuVAxVpj1AGHTAeHE4YACICCAEQABoCZGc&ae=2&co=1&ase=2&gclid=CjwKCAjw08fSBhA7EiwAfbQTsE5SAh_-hQor8DDo2vGFgBKODCF7oS_CNAQgnmztUuXmsqeJS7n6gBoCa4sQAvD_BwE&cid=CAASugHkaFKi8pNNE1PqqPFMOWrPG8ZHTPUw0v6bXesOulYRf7LQvcamtqPVqUio5blfa6bjFk1kS_bD__mPGdm5NcFEhVbPj5mIuNzfP2XuxfvSkJUs6CZAs10wcbuSM-3-Ws7FBRmjmyvCiV4NQyf11M3OgaGWKzBNzQ8JKnE3ALcsCf9Ij6OBenrpPqw0tIOx6EjEwE85JafxYo1Z77OGjY0eHje7w21PGQ9H59-rL1PFFUcOI0HaYELKAeE&cce=2&category=acrcp_v1_71&sig=AOD64_2h8Qq6R0VgpCJwvxOSo_YB6a47PA&q&nis=4&adurl&ved=2ahUKEwj817j0ucuVAxVRWkEAHZb8EfsQ0Qx6BAgQEAE)
 2. [Tableau. Tableau Public Documentation.](https://help.tableau.com/)
-3. [Microsoft. Microsoft Excel Documentation.](https://support.microsoft.com/excel)
+   
