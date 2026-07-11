@@ -4,11 +4,14 @@
 - [Project Overview](#project-overview)
 - [Data Source](#data-source)
 - [Tools](#tools)
+- [Data Cleaning And Preparation](#data-cleaning-and-preparation)
 - [Exploratory Data Analysis](#exploratory-data-analysis)
+- [Results And Findings](#results-and-findings)
 - [Data Analysis Query](#data-analysis-query)
 - [Recommendation](#recommendation)
 - [Limitations](#limitations)
 - [References](#references)
+
 
 ### Project Overview
 
@@ -26,7 +29,7 @@ Link: [Online Retail II Dataset](https://archive.ics.uci.edu/dataset/502/online+
 - Big Query - Data Cleaning And Analysis [Download here](https://www.google.com/aclk?sa=L&ai=DChsSEwiQ1ZSIuMiVAxU_pVAGHSVxOMgYACICCAEQARoCZGc&ae=2&co=1&ase=2&gclid=Cj0KCQjwsMLSBhD9ARIsAIpUTDoFp9zUz4I9oUIch82IuUSqthaIs-la6BhhicCi6buyLOHJEnon1dUaAnvHEALw_wcB&cid=CAASuwHkaHUeRtYPXh2-XjbEIyN5mV4IQKLM2_9v2gjeebigqXvALRuPxh_yca1mqxUbdCSr69V5SdMbETP3hR5eu-cBIG8sQMzz8RizvVVkmk6NjH4Ei9da0rgZFV79hmaOGYzop6X-ov-uQDc_rL12CMvYG5ffPPZEIXeKQbPw3EVRORBS_sTST01FuSEswphZQBKfxF7e7UUs2V_rI4XmrjMPDIMZgZUVNuLvp7dHXZ08VMwIWxvTL4Fk8FAy&cce=2&category=acrcp_v1_71&sig=AOD64_3t8n4aBzuueq7GyshaM7ubBGE5pw&q&nis=4&adurl&ved=2ahUKEwiouo6IuMiVAxWDe0EAHeeZOV8Q0Qx6BAgVEAE)
 - Tableau - Data Visualization [Download here](https://www.tableau.com/products/public)
 
-### Data Cleaning/Preparation
+### Data Cleaning And Preparation
 The following data cleaning steps were performed in SQL before analysis:
 - Removed records with missing CustomerID values, as these transactions could not be linked to individual customers.
 - Removed duplicate records to ensure each transaction was represented only once.
@@ -152,7 +155,7 @@ ORDER BY
        PaymentMethod;
 ```
 
-### Reults/Findings
+### Results And Findings
 The analysis results are summarized as follows:
 -The business generated £16.51 million in total revenue during the analysis period.
 - A total of thousands of customer orders were completed, demonstrating consistent transaction activity throughout the period.
