@@ -13,106 +13,95 @@
 ### Project Overview
 
 Project Overview
-
 This project analyzes online retail transaction data to uncover insights into sales performance, customer behavior, and product trends. Using Excel for data cleaning, SQL for analysis, and Tableau for visualization, the project delivers an interactive dashboard that helps identify key business metrics, top-performing products, valuable customers, and revenue trends to support data-driven decision-making.
 
 <img width="750" height="450" alt="Online Retail Performance Dashboard" src="https://github.com/user-attachments/assets/956eaf10-68e7-45cc-a3d1-f8195ab681f0" />
 
-
-
 ### Data Source
+This project uses the Online Retail II dataset from the UCI Machine Learning Repository. The dataset contains transactional data from a UK-based online retailer, including invoices, products, quantities, prices, customer IDs, and countries. It is widely used for data analytics, customer behavior, and sales analysis projects.
 
-The dataset used in this project is the IBM Telco Customer Churn dataset, obtained from Kaggle. It contains customer demographic, service, billing, and churn information for 7,043 telecom customers. Dataset:https://www.kaggle.com/datasets/blastchar/telco-customer-churn
+Link: [Online Retail II Dataset](https://archive.ics.uci.edu/dataset/502/online+retail+ii?utm_source=chatgpt.com)
 
 ### Tools
-- Excel- Data Cleaning [Download here](https://www.microsoft.com/en/microsoft-365/excel)
-- SQL- Data Analysis [Download here](https://www.google.com/aclk?sa=L&ai=DChsSEwiQ1ZSIuMiVAxU_pVAGHSVxOMgYACICCAEQARoCZGc&ae=2&co=1&ase=2&gclid=Cj0KCQjwsMLSBhD9ARIsAIpUTDoFp9zUz4I9oUIch82IuUSqthaIs-la6BhhicCi6buyLOHJEnon1dUaAnvHEALw_wcB&cid=CAASuwHkaHUeRtYPXh2-XjbEIyN5mV4IQKLM2_9v2gjeebigqXvALRuPxh_yca1mqxUbdCSr69V5SdMbETP3hR5eu-cBIG8sQMzz8RizvVVkmk6NjH4Ei9da0rgZFV79hmaOGYzop6X-ov-uQDc_rL12CMvYG5ffPPZEIXeKQbPw3EVRORBS_sTST01FuSEswphZQBKfxF7e7UUs2V_rI4XmrjMPDIMZgZUVNuLvp7dHXZ08VMwIWxvTL4Fk8FAy&cce=2&category=acrcp_v1_71&sig=AOD64_3t8n4aBzuueq7GyshaM7ubBGE5pw&q&nis=4&adurl&ved=2ahUKEwiouo6IuMiVAxWDe0EAHeeZOV8Q0Qx6BAgVEAE)
+- SQL- Data Cleaning And Analysis [Download here](https://www.google.com/aclk?sa=L&ai=DChsSEwiQ1ZSIuMiVAxU_pVAGHSVxOMgYACICCAEQARoCZGc&ae=2&co=1&ase=2&gclid=Cj0KCQjwsMLSBhD9ARIsAIpUTDoFp9zUz4I9oUIch82IuUSqthaIs-la6BhhicCi6buyLOHJEnon1dUaAnvHEALw_wcB&cid=CAASuwHkaHUeRtYPXh2-XjbEIyN5mV4IQKLM2_9v2gjeebigqXvALRuPxh_yca1mqxUbdCSr69V5SdMbETP3hR5eu-cBIG8sQMzz8RizvVVkmk6NjH4Ei9da0rgZFV79hmaOGYzop6X-ov-uQDc_rL12CMvYG5ffPPZEIXeKQbPw3EVRORBS_sTST01FuSEswphZQBKfxF7e7UUs2V_rI4XmrjMPDIMZgZUVNuLvp7dHXZ08VMwIWxvTL4Fk8FAy&cce=2&category=acrcp_v1_71&sig=AOD64_3t8n4aBzuueq7GyshaM7ubBGE5pw&q&nis=4&adurl&ved=2ahUKEwiouo6IuMiVAxWDe0EAHeeZOV8Q0Qx6BAgVEAE)
 - Tableau- Data Visualization [Download here](https://www.tableau.com/products/public)
 
 ### Data Cleaning/Preparation
-The dataset was cleaned and prepared in Microsoft Excel before analysis. The following data cleaning steps were performed:
-- Checked the dataset for duplicate records and removed duplicates where necessary.
-- Identified and handled missing or blank values.
-- Standardized data formats to ensure consistency across all columns.
-- Verified data types and ensured numerical fields were correctly formatted.
-- Checked for inconsistencies and data entry errors.
-- Verified the accuracy of the cleaned dataset before analysis.
+The following data cleaning steps were performed in SQL before analysis:
+- Removed records with missing CustomerID values, as these transactions could not be linked to individual customers.
+- Removed duplicate records to ensure each transaction was represented only once.
+- Filtered out records where Quantity ≤ 0, as these represented returned, cancelled, or invalid transactions.
+- Filtered out records where UnitPrice ≤ 0, removing transactions with invalid or zero prices.
+- Standardized the InvoiceDate field into the appropriate date/time format for time-based analysis.
+- Verified data consistency by checking data types and ensuring key fields contained valid values.
+- Created a cleaned dataset containing only valid customer transactions for subsequent analysis and visualization.
 
 ### Exploratory Data Analysis
-The exploratory analysis focused on identifying the key factors influencing customer churn. The analysis included:
-- Calculating the overall customer churn rate.
-- Comparing churn rates across different contract types.
-- Analyzing churn by customer tenure groups.
-- Examining the relationship between monthly charges and churn.
-- Evaluating churn across different payment methods.
-- Comparing churn rates by internet service type.
-- Analyzing the impact of Tech Support and Online Security on customer churn.
-- Comparing churn across customer demographics such as Senior Citizen status and Gender.
-- Identifying patterns and trends to uncover the primary drivers of customer churn.
-
+The following analyses were conducted to answer key business questions:
+-Calculated total revenue generated from all valid transactions.
+- Analyzed monthly revenue trends to identify seasonal sales patterns.
+- Identified the top-selling products by revenue.
+- Identified the most purchased products based on quantity sold.
+- Determined the top customers based on total revenue generated.
+- Analyzed sales performance by country.
+- Calculated the total quantity of products sold.
+- Calculated the total number of unique customers.
+- Calculated the total number of orders (invoices).
+- Explored product sales performance to identify best-performing products.
+- Compared revenue contributions across different countries.
+- Identified peak and low sales periods using transaction dates.
+- 
 ### Data Analysis Query
-Churn Rate
+Total Revenue
   ```sql
   SELECT
-     SUM(CASE WHEN Churn = true THEN 1 ELSE 0 END) * 100 / COUNT(*) AS churn_rate
+     SUM(Price*Quantity) AS Total_Revenue
   FROM 
-    `porflio-projrct-1.ibm_churn_analysis.clean_churn_table`
+   `project-b019bf3e-9e2f-47ca-9af.online_retail_dataset.cleaned_retail_data`
   ```
   
-Total customers 
+Total Orders 
 ```sql
 SELECT
-     COUNT(*)
+     COUNT(DISTINCT Invoice) AS Total_Orders
 FROM 
-    `porflio-projrct-1.ibm_churn_analysis.clean_churn_table`
+    `project-b019bf3e-9e2f-47ca-9af.online_retail_dataset.cleaned_retail_data`
 ```
-Churned Customers
+Total Customers
 ```sql
 SELECT
-     COUNTIF(Churn, "true")
+     COUNT(DISTINCT `CustomerID`) AS Total_Custmers
 FROM
      `porflio-projrct-1.ibm_churn_analysis.clean_churn_table`
 ```
-Retained Customers
+Total Quantity Sold
 ```sql
 SELECT
-     COUNTIF(Churn, "false")
+     SUM(Quantity) AS Total_Quantity
 FROM
-     `porflio-projrct-1.ibm_churn_analysis.clean_churn_table`
+     `project-b019bf3e-9e2f-47ca-9af.online_retail_dataset.cleaned_retail_data`
 ```
-Churn by contract 
+Monthly Revenue Trend
 ```sql
 SELECT
-    Contract,
-    COUNT(*) total_customers,
-    SUM(CASE WHEN Churn = true THEN 1 ELSE 0 END)* 100/ count(*) AS Churn_rate,
-    SUM (CASE WHEN Churn = true then 1 ELSE 0 END) AS Total_churn
+    DATE_TRUNC(DATE(InvoiceDate), MONTH) AS Month,
+    ROUND(SUM(Quantity * Price), 2) AS Monthly_Revenue
 FROM
-     `porflio-projrct-1.ibm_churn_analysis.clean_churn_table` 
-GROUP BY
-       Contract
-ORDER BY 
-       Churn_rate desc;
+    `project-b019bf3e-9e2f-47ca-9af.online_retail_dataset.cleaned_retail_data`
+GROUP BY Month
+ORDER BY Month;
 ```
-Churn Rate By Tenure Group
+Top Products By Revenue
 ```sql
 SELECT
-    CASE
-    WHEN tenure >= 0 AND tenure < 12 THEN '0-12'
-    WHEN tenure >= 12 AND tenure < 24 THEN '12-24'
-    WHEN tenure >= 24 AND tenure < 36 THEN '36-48'
-    WHEN tenure >= 48 AND tenure < 60 THEN '48-60'
-    ELSE '60+'
-    END as Tenure_Group,
-    COUNT(*) total_customers,
-    SUM(CASE WHEN Churn = true THEN 1 ELSE 0 END)* 100/ count(*),2) AS churn_rate,
-    SUM (CASE WHEN Churn = true THEN 1 ELSE 0 END) AS Total_churn
+     Description
+     SUM(Price*Quantity) AS Total_Revenue
 FROM
-     `porflio-projrct-1.ibm_churn_analysis.clean_churn_table` 
+     `project-b019bf3e-9e2f-47ca-9af.online_retail_dataset.cleaned_retail_data`
 GROUP BY
-       Tenure_Group
-GROUP BY
-       Tenure_Group ;
+       Description
+ORDER BY
+       Total_Revenue DESC
 ```
 Churn by Monthy Charges
 ```sql
