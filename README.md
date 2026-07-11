@@ -17,8 +17,7 @@
 
 Project Overview
 This project analyzes online retail transaction data to uncover insights into sales performance, customer behavior, and product trends. Using Excel for data cleaning, SQL for analysis, and Tableau for visualization, the project delivers an interactive dashboard that helps identify key business metrics, top-performing products, valuable customers, and revenue trends to support data-driven decision-making.
-
-<img width="750" height="450" alt="Online Retail Performance Dashboard" src="https://github.com/user-attachments/assets/956eaf10-68e7-45cc-a3d1-f8195ab681f0" />
+<img width="750" height="450" alt="Online Retail Sales Performance Dashboard" src="https://github.com/user-attachments/assets/2525fe6e-7a4d-4e94-811d-d2712666288a" />
 
 ### Data Source
 This project uses the Online Retail II dataset from the UCI Machine Learning Repository. The dataset contains transactional data from a UK based online retailer, including invoices, products, quantities, prices, customer IDs, and countries.
